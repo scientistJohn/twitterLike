@@ -11,8 +11,13 @@ class UserController {
     UserService service
 
     @GetMapping
-    String getUser() {
-        return "User"
+    def getUserForHimself(@RequestParam("userId") String userId) {
+        service.getUser(userId)
+    }
+
+    @GetMapping("/{userId}")
+    def getAnotherUser(@PathVariable("userId") String userId) {
+        service.getAnotherUser(userId)
     }
 
     @PostMapping

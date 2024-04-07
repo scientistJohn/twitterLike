@@ -35,20 +35,25 @@ class UserService {
     }
 
     def updateUser(String userId, Map updateRequest) {
-        def user = findUser(userId)
+        def user = getUser(userId)
         user.name = updateRequest.name
         user = repository.save(user)
         updateProducer.notifyUpdated([eventType: EventType.UPDATED, user: user])
         user
     }
 
-    private def findUser(String userId) {
-        def user = repository.findById(userId)
+    def getUser(String userId) {
+        repository.findById(userId)
                 .orElseThrow { new ResponseStatusException(HttpStatus.NOT_FOUND, "no such user") }
     }
 
+    def getAnotherUser(String userId) {
+        def user = getUser(userId)
+        [id: user.id, name: user.name]
+    }
+
     void deleteUser(String userId) {
-        def user = findUser(userId)
+        def user = getUser(userId)
         user = repository.delete(user)
         updateProducer.notifyUpdated([eventType: EventType.DELETED, user: user])
     }
