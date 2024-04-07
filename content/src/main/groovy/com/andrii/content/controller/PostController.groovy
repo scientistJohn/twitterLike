@@ -37,6 +37,13 @@ class PostController {
         service.getPost(postId, userId)
     }
 
+    @GetMapping
+    def getPosts(@RequestParam("userId") String userId,
+                 @RequestParam(name = "page", defaultValue = "0") int page,
+                 @RequestParam(name = "size", defaultValue = "10") int size) {
+        service.getPosts(userId, page, size)
+    }
+
     @PostMapping("/{postId}/comment")
     void comment(@PathVariable("postId") String postId,
                  @RequestBody Map commentRequest,
