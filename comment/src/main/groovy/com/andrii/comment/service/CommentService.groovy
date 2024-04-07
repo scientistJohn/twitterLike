@@ -40,4 +40,8 @@ class CommentService {
         Pageable paging = PageRequest.of(page, size, Sort.Direction.DESC, "id")
         repository.findByPostId(postId, paging)
     }
+
+    def getCommentsList(List<String> commentIds) {
+        repository.findAllById commentIds
+    }
 }

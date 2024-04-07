@@ -28,4 +28,9 @@ class CommentController {
                     @RequestParam(name = "size", defaultValue = "10") int size) {
         commentService.getComments(postId, page, size)
     }
+
+    @PostMapping("/comment")
+    def getCommentsList(@RequestBody List<String> commentIds) {
+        commentService.getCommentsList(commentIds)
+    }
 }
