@@ -20,8 +20,8 @@ class UserService {
                                  password: createRequest.credentials.password,
                                  userId  : user.id]
         try {
-            authServiceClient.createLoginCredentials(createCredentials)
-        } catch (RuntimeException e) {
+            authServiceClient.saveCredentials(createCredentials)
+        } catch (Exception e) {
             repository.delete(user)
             throw e
         }
