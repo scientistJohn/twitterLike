@@ -3,4 +3,5 @@ include 'user'
 include 'auth'
 include 'post'
 include 'comment'
+include 'like'
 
