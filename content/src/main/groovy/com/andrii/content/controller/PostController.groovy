@@ -1,16 +1,17 @@
 package com.andrii.content.controller
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.andrii.content.service.PostService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping('/post')
 class PostController {
+    @Autowired
+    PostService service
 
     @PostMapping
-    String createPost() {
-        return "Posts";
+    def createPost(@RequestBody Map createRequest, @RequestParam("userId") String userId) {
+        service.createPost(createRequest, userId)
     }
 }
