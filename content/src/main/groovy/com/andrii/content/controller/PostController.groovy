@@ -49,4 +49,11 @@ class PostController {
                        @RequestParam("userId") String userId) {
         commentService.removeComment(commentId, userId)
     }
+
+    @GetMapping("/{postId}/comment")
+    def getComments(@PathVariable("postId") String postId,
+                    @RequestParam(name = "page", defaultValue = "0") int page,
+                    @RequestParam(name = "size", defaultValue = "10") int size) {
+        commentService.getComments(postId, page, size)
+    }
 }
