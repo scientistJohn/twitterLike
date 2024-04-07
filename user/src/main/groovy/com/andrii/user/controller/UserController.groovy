@@ -19,5 +19,10 @@ class UserController {
     def createUser(@RequestBody Map createRequest) {
         service.createUser(createRequest)
     }
+
+    @PutMapping
+    def updateUser(@RequestBody Map updateRequest, @RequestParam("userId") String userId) {
+        service.updateUser(userId, updateRequest)
+    }
 }
 
