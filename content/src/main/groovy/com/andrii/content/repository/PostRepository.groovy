@@ -13,4 +13,8 @@ interface PostRepository extends MongoRepository<Post, String> {
     @Query("{'id': ?0 }")
     @Update("{'\$inc' : {'commentsAmount':1}} ")
     void incrCommentsAmount(String postId)
+
+    @Query("{'id': ?0 }")
+    @Update("{'\$inc' : {'commentsAmount':-1}} ")
+    void decrCommentsAmount(String postId)
 }

@@ -26,5 +26,11 @@ class CommentService {
         repository.save(comment)
         postRepository.incrCommentsAmount(post.id)
     }
-    
+
+    void removeComment(String commentId, String userId) {
+        def comment = repository.findByIdAndUserId(commentId, userId)
+                .orElseThrow { new ResponseStatusException(HttpStatus.NOT_FOUND, "no such comment") }
+        repository.delete(comment)
+        postRepository.decrCommentsAmount(comment.postId)
+    }
 }

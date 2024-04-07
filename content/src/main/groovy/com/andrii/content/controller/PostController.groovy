@@ -43,4 +43,10 @@ class PostController {
                  @RequestParam("userId") String userId) {
         commentService.comment(postId, userId, commentRequest)
     }
+
+    @DeleteMapping("/comment/{commentId}")
+    void removeComment(@PathVariable("commentId") String commentId,
+                       @RequestParam("userId") String userId) {
+        commentService.removeComment(commentId, userId)
+    }
 }
