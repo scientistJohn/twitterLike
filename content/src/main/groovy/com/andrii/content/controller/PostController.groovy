@@ -14,4 +14,11 @@ class PostController {
     def createPost(@RequestBody Map createRequest, @RequestParam("userId") String userId) {
         service.createPost(createRequest, userId)
     }
+
+    @PutMapping("/{postId}")
+    def updatePost(@PathVariable("postId") String postId,
+                   @RequestBody Map updateRequest,
+                   @RequestParam("userId") String userId) {
+        service.updatePost(postId, userId, updateRequest)
+    }
 }

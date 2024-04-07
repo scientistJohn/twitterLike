@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PostRepository extends MongoRepository<Post, String> {
-
+    Optional<Post> findByIdAndUserId(String postId, String userId)
 }
