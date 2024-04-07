@@ -1,5 +1,6 @@
 package com.andrii.content.controller
 
+import com.andrii.content.service.CommentService
 import com.andrii.content.service.PostService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*
 class PostController {
     @Autowired
     PostService service
+    @Autowired
+    CommentService commentService
 
     @PostMapping
     def createPost(@RequestBody Map createRequest, @RequestParam("userId") String userId) {
@@ -32,5 +35,12 @@ class PostController {
     def getPost(@PathVariable("postId") String postId,
                 @RequestParam("userId") String userId) {
         service.getPost(postId, userId)
+    }
+
+    @PostMapping("/{postId}/comment")
+    void comment(@PathVariable("postId") String postId,
+                 @RequestBody Map commentRequest,
+                 @RequestParam("userId") String userId) {
+        commentService.comment(postId, userId, commentRequest)
     }
 }
