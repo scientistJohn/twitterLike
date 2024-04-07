@@ -29,10 +29,9 @@ class PostController {
         service.deletePost(postId, userId)
     }
 
-    @GetMapping("/{postId}")
-    def getPost(@PathVariable("postId") String postId,
-                @RequestParam("userId") String userId) {
-        service.getPost(postId, userId)
+    @PostMapping("/list")
+    def getPostByIds(@RequestBody List<String> Ids) {
+        service.getPostByIds(Ids)
     }
 
     @GetMapping

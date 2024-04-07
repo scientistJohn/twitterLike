@@ -27,7 +27,7 @@ class PostService {
         repository.save(post)
     }
 
-    def getPost(String postId, String userId) {
+    private def getPost(String postId, String userId) {
         repository.findByIdAndUserId(postId, userId)
                 .orElseThrow { new ResponseStatusException(HttpStatus.NOT_FOUND, "no such post") }
     }
@@ -40,5 +40,9 @@ class PostService {
     def getPosts(String userId, int page, int size) {
         Pageable paging = PageRequest.of(page, size, Sort.Direction.DESC, "id")
         repository.findByUserId(userId, paging)
+    }
+
+    def getPostByIds(List<String> ids) {
+        repository.findAllById ids
     }
 }
