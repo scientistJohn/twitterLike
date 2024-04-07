@@ -35,11 +35,22 @@ class UserService {
     }
 
     def updateUser(String userId, Map updateRequest) {
-        def user = repository.findById(userId)
-                .orElseThrow {new ResponseStatusException(HttpStatus.NOT_FOUND, "no such user")}
+        def user = findUser(userId)
         user.name = updateRequest.name
         user = repository.save(user)
         updateProducer.notifyUpdated([eventType: EventType.UPDATED, user: user])
         user
     }
+
+    private def findUser(String userId) {
+        def user = repository.findById(userId)
+                .orElseThrow { new ResponseStatusException(HttpStatus.NOT_FOUND, "no such user") }
+    }
+
+    void deleteUser(String userId) {
+        def user = findUser(userId)
+        user = repository.delete(user)
+        updateProducer.notifyUpdated([eventType: EventType.DELETED, user: user])
+    }
+
 }

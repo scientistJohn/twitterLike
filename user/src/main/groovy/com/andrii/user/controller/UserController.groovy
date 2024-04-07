@@ -24,5 +24,10 @@ class UserController {
     def updateUser(@RequestBody Map updateRequest, @RequestParam("userId") String userId) {
         service.updateUser(userId, updateRequest)
     }
+
+    @DeleteMapping
+    void deleteUser(@RequestParam("userId") String userId) {
+        service.deleteUser(userId)
+    }
 }
 
