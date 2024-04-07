@@ -19,9 +19,18 @@ class PostService {
 
 
     def updatePost(String postId, String userId, Map updateRequest) {
-        def post = repository.findByIdAndUserId(postId, userId)
-                .orElseThrow { new ResponseStatusException(HttpStatus.NOT_FOUND, "no such post") }
+        def post = getPost(postId, userId)
         post.text = updateRequest.text
         repository.save(post)
+    }
+
+    def getPost(String postId, String userId) {
+        repository.findByIdAndUserId(postId, userId)
+                .orElseThrow { new ResponseStatusException(HttpStatus.NOT_FOUND, "no such post") }
+    }
+
+    def deletePost(String postId, String userId) {
+        def post = getPost(postId, userId)
+        repository.delete(post)
     }
 }

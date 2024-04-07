@@ -21,4 +21,10 @@ class PostController {
                    @RequestParam("userId") String userId) {
         service.updatePost(postId, userId, updateRequest)
     }
+
+    @DeleteMapping("/{postId}")
+    void deletePost(@PathVariable("postId") String postId,
+                    @RequestParam("userId") String userId) {
+        service.deletePost(postId, userId)
+    }
 }
