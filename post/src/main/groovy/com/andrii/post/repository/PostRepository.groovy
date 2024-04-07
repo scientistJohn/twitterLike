@@ -1,7 +1,7 @@
-package com.andrii.content.repository
+package com.andrii.post.repository
 
 
-import com.andrii.content.model.Post
+import com.andrii.post.model.Post
 import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.data.mongodb.repository.Query

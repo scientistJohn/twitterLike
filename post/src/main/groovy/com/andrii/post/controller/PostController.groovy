@@ -1,7 +1,7 @@
-package com.andrii.content.controller
+package com.andrii.post.controller
 
-import com.andrii.content.service.CommentService
-import com.andrii.content.service.PostService
+
+import com.andrii.post.service.PostService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*
 class PostController {
     @Autowired
     PostService service
-    @Autowired
-    CommentService commentService
 
     @PostMapping
     def createPost(@RequestBody Map createRequest, @RequestParam("userId") String userId) {
@@ -42,25 +40,5 @@ class PostController {
                  @RequestParam(name = "page", defaultValue = "0") int page,
                  @RequestParam(name = "size", defaultValue = "10") int size) {
         service.getPosts(userId, page, size)
-    }
-
-    @PostMapping("/{postId}/comment")
-    void comment(@PathVariable("postId") String postId,
-                 @RequestBody Map commentRequest,
-                 @RequestParam("userId") String userId) {
-        commentService.comment(postId, userId, commentRequest)
-    }
-
-    @DeleteMapping("/comment/{commentId}")
-    void removeComment(@PathVariable("commentId") String commentId,
-                       @RequestParam("userId") String userId) {
-        commentService.removeComment(commentId, userId)
-    }
-
-    @GetMapping("/{postId}/comment")
-    def getComments(@PathVariable("postId") String postId,
-                    @RequestParam(name = "page", defaultValue = "0") int page,
-                    @RequestParam(name = "size", defaultValue = "10") int size) {
-        commentService.getComments(postId, page, size)
     }
 }

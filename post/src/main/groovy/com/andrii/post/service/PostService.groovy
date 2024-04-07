@@ -1,8 +1,8 @@
-package com.andrii.content.service
+package com.andrii.post.service
 
 
-import com.andrii.content.model.Post
-import com.andrii.content.repository.PostRepository
+import com.andrii.post.model.Post
+import com.andrii.post.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable

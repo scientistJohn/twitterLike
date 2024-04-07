@@ -1,8 +1,9 @@
-package com.andrii.content.service
+package com.andrii.comment.service
 
-import com.andrii.content.model.Comment
-import com.andrii.content.repository.CommentRepository
-import com.andrii.content.repository.PostRepository
+import com.andrii.comment.model.Comment
+import com.andrii.comment.producer.CommentEventProducer
+import com.andrii.comment.producer.CommentEventType
+import com.andrii.comment.repository.CommentRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -14,27 +15,25 @@ import org.springframework.web.server.ResponseStatusException
 @Service
 class CommentService {
     @Autowired
-    PostRepository postRepository
+    CommentEventProducer eventProducer
     @Autowired
     CommentRepository repository
 
     void comment(String postId,
                  String userId,
                  Map commentRequest) {
-        def post = postRepository.findByIdAndUserId(postId, userId)
-                .orElseThrow { new ResponseStatusException(HttpStatus.NOT_FOUND, "no such post") }
         def comment = new Comment(userId: userId,
                 postId: postId,
                 text: commentRequest.text)
         repository.save(comment)
-        postRepository.incrCommentsAmount(post.id)
+        eventProducer.notify(CommentEventType.CREATED, [:])
     }
 
     void removeComment(String commentId, String userId) {
         def comment = repository.findByIdAndUserId(commentId, userId)
                 .orElseThrow { new ResponseStatusException(HttpStatus.NOT_FOUND, "no such comment") }
         repository.delete(comment)
-        postRepository.decrCommentsAmount(comment.postId)
+        eventProducer.notify(CommentEventType.REMOVED, [:])
     }
 
     def getComments(String postId, int page, int size) {

@@ -1,4 +1,4 @@
-package com.andrii.content.model
+package com.andrii.comment.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document

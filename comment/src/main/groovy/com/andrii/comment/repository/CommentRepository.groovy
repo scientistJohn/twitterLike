@@ -1,6 +1,6 @@
-package com.andrii.content.repository
+package com.andrii.comment.repository
 
-import com.andrii.content.model.Comment
+import com.andrii.comment.model.Comment
 import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.repository.MongoRepository
 

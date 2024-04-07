@@ -1,5 +1,6 @@
 rootProject.name = 'twitterLike'
 include 'user'
 include 'auth'
-include 'content'
+include 'post'
+include 'comment'
 
