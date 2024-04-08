@@ -36,9 +36,15 @@ class CommentService {
         eventProducer.notify(CommentEventType.REMOVED, [:])
     }
 
-    def getComments(String postId, int page, int size) {
-        Pageable paging = PageRequest.of(page, size, Sort.Direction.DESC, "id")
-        repository.findByPostId(postId, paging)
+    def getComments(String postId, int pageNum, int size) {
+        Pageable paging = PageRequest.of(pageNum, size, Sort.Direction.DESC, "id")
+        def page = repository.findByPostId(postId, paging)
+        [
+                comments     : page.getContent(),
+                currentPage  : page.totalPages,
+                totalPages   : page.totalPages,
+                totalComments: page.totalElements
+        ]
     }
 
     def getCommentsList(List<String> commentIds) {

@@ -37,9 +37,15 @@ class PostService {
         repository.delete(post)
     }
 
-    def getPosts(String userId, int page, int size) {
-        Pageable paging = PageRequest.of(page, size, Sort.Direction.DESC, "id")
-        repository.findByUserId(userId, paging)
+    def getPosts(String userId, int pageNumber, int size) {
+        Pageable paging = PageRequest.of(pageNumber, size, Sort.Direction.DESC, "id")
+        def page = repository.findByUserId(userId, paging)
+        [
+                posts      : page.getContent(),
+                currentPage: page.totalPages,
+                totalPages : page.totalPages,
+                totalPosts : page.totalElements
+        ]
     }
 
     def getPostByIds(List<String> ids) {
