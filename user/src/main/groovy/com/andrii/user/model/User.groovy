@@ -8,5 +8,10 @@ class User {
     @Id
     String id
     String name
-    List<User> subscriptions = []
+    List<Subscription> subscriptions = []
+
+    static class Subscription {
+        String id
+        String name
+    }
 }
