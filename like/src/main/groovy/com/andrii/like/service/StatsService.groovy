@@ -15,14 +15,54 @@ class StatsService {
     LikeRepository likeRepository
 
     def getPostsStats(List<String> ids, String userId) {
-        def userLikes = likeRepository.findUserLikes(userId, ids, ObjectType.POST).collect { it.objectId } as HashSet
-        repository.findAllById(ids.collect { new Stats.StatsId(objectId: it, objectType: ObjectType.POST) })
-                .collect { [postId: it.id.objectId, comments: it.comments, likes: it.likes, isLikedByUser: userLikes.contains(it.id.objectId)] }
+        def userLikes = likeRepository.findUserLikes(userId, ids, ObjectType.POST)
+        def keys = ids.collect { new Stats.StatsId(objectId: it, objectType: ObjectType.POST) }
+        def stats = repository.findAllById(keys)
+                .collectEntries {
+                    [
+                            it.id.objectId,
+                            [
+                                    postId  : it.id.objectId,
+                                    comments: it.comments,
+                                    likes   : it.likes,
+                                    userLike: userLikes.find { it.userId == userId }?.id
+                            ]
+                    ]
+                }
+        ids.collect { stats.getOrDefault(it, getEmptyPostStats(it)) }
+    }
+
+    private static def getEmptyPostStats(String postId) {
+        [
+                postId  : postId,
+                comments: 0,
+                likes   : 0,
+                userLike: null
+        ]
     }
 
     def getCommentsStats(List<String> ids, String userId) {
-        def userLikes = likeRepository.findUserLikes(userId, ids, ObjectType.COMMENT).collect { it.objectId } as HashSet
-        repository.findAllById(ids.collect(it -> new Stats.StatsId(objectId: it, objectType: ObjectType.POST)))
-                .collect { [commentId: it.id.objectId, likes: it.likes, isLikedByUser: userLikes.contains(it.id.objectId)] }
+        def userLikes = likeRepository.findUserLikes(userId, ids, ObjectType.COMMENT)
+        def keys = ids.collect { it -> new Stats.StatsId(objectId: it, objectType: ObjectType.POST) }
+        def stats = repository.findAllById(keys)
+                .collectEntries {
+                    [
+                            it.id.objectId,
+                            [
+                                    commentId: it.id.objectId,
+                                    likes    : it.likes,
+                                    userLike : userLikes.find { it.userId == userId }?.id
+                            ]
+                    ]
+                }
+        ids.collect { stats.getOrDefault(it, getEmptyCommentStats(it)) }
+    }
+
+    private static def getEmptyCommentStats(String commentId) {
+        [
+                commentId: commentId,
+                likes    : 0,
+                userLike : null
+        ]
     }
 }
