@@ -47,9 +47,11 @@ class UserService {
                 .orElseThrow { new ResponseStatusException(HttpStatus.NOT_FOUND, "no such user") }
     }
 
-    def getAnotherUser(String userId) {
+    def getAnotherUser(String anotherUserId, String userId) {
+        def anotherUser = getUser(anotherUserId)
         def user = getUser(userId)
-        [id: user.id, name: user.name]
+        def isSubscribed = user.subscriptions.any { it.id == anotherUserId }
+        [id: anotherUser.id, name: anotherUser.name, isSubscribed: isSubscribed]
     }
 
     void deleteUser(String userId) {
