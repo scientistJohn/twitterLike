@@ -9,6 +9,4 @@ class Post {
     String id
     String userId
     String text
-    long likesAmount = 0
-    long commentsAmount = 0
 }

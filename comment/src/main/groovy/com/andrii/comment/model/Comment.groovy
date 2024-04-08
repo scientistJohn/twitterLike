@@ -10,5 +10,4 @@ class Comment {
     String userId
     String postId
     String text
-    String likesAmount = 0
 }
