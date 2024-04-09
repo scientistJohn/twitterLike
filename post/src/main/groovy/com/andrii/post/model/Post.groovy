@@ -8,5 +8,6 @@ class Post {
     @Id
     String id
     String userId
+    String userName
     String text
 }
