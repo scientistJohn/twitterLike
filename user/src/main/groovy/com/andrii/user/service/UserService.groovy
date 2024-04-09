@@ -24,7 +24,8 @@ class UserService {
         def user = repository.save(new User(name: createRequest.name))
         def createCredentials = [login   : createRequest.credentials.login,
                                  password: createRequest.credentials.password,
-                                 userId  : user.id]
+                                 userId  : user.id,
+                                 userName: user.name]
         try {
             authServiceClient.saveCredentials(createCredentials)
         } catch (Exception e) {
@@ -38,7 +39,7 @@ class UserService {
         def user = getUser(userId)
         user.name = updateRequest.name
         user = repository.save(user)
-        updateProducer.notifyUpdated([eventType: EventType.UPDATED, user: user])
+        updateProducer.notifyUpdated([eventType: EventType.UPDATED, user: [userId: user.id, user: user.name]])
         user
     }
 
@@ -57,7 +58,7 @@ class UserService {
     void deleteUser(String userId) {
         def user = getUser(userId)
         user = repository.delete(user)
-        updateProducer.notifyUpdated([eventType: EventType.DELETED, user: user])
+        updateProducer.notifyUpdated([eventType: EventType.DELETED, user: [userId: user.id, user: user.name]])
     }
 
 }
