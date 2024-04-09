@@ -22,4 +22,6 @@ interface StatsRepository extends MongoRepository<Stats, Stats.StatsId> {
     @Query("{'id.objectId': ?0,  'id.objectType': ?1}")
     @Update("{'\$inc' : {'likes':-1}} ")
     void decrLikes(String objectId, ObjectType objectType)
+
+    void deleteByUserId(String userId)
 }

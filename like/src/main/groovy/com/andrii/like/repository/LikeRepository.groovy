@@ -10,4 +10,6 @@ interface LikeRepository extends MongoRepository<Like, String> {
 
     @Query("{'userIs': ?0, 'objectId': { '\$in': ?1 }, 'objectType': ?2}")
     Collection<Like> findUserLikes(String userId, List<String> objectId, ObjectType objectType)
+
+    void deleteByUserId(String userId)
 }

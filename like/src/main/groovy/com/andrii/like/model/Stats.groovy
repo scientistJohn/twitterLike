@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 class Stats {
     @Id
     StatsId id
+    String userId
     long comments = 0
     long likes = 0
 
