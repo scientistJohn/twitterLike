@@ -58,6 +58,7 @@ class UserService {
     void deleteUser(String userId) {
         def user = getUser(userId)
         repository.delete(user)
+        repository.deleteUserInSubscriptions(userId)
         updateProducer.notifyUpdated([eventType: UserEventType.DELETED, user: [userId: userId]])
     }
 
