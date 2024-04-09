@@ -8,6 +8,7 @@ class Comment {
     @Id
     String id
     String userId
+    String userName
     String postId
     String text
 }

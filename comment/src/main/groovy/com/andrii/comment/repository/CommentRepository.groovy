@@ -9,4 +9,8 @@ interface CommentRepository extends MongoRepository<Comment, String> {
     Optional<Comment> findByIdAndUserId(String commentId, String userId)
 
     Page<Comment> findByPostId(String postId, Pageable pageable)
+
+    List<Comment> findAllByUserId(String userId)
+
+    void deleteByUserId(String userId)
 }
