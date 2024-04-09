@@ -11,4 +11,6 @@ interface FeedRecordRepository extends MongoRepository<FeedRecord, String> {
 
     @Query(value = "{'userId': ?0, 'event.userId': ?1, 'event.eventType': ?2}", delete = true)
     void deleteSubscriptionEvent(String subscriberId, String subscribedId, FeedEventType eventType)
+
+    void deleteByUserId(String userId)
 }
