@@ -2,7 +2,7 @@ package com.andrii.user.service
 
 import com.andrii.user.client.AuthServiceClient
 import com.andrii.user.model.User
-import com.andrii.user.producer.EventType
+import com.andrii.user.producer.UserEventType
 import com.andrii.user.producer.UserUpdateProducer
 import com.andrii.user.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,7 +39,7 @@ class UserService {
         def user = getUser(userId)
         user.name = updateRequest.name
         user = repository.save(user)
-        updateProducer.notifyUpdated([eventType: EventType.UPDATED, user: [userId: user.id, user: user.name]])
+        updateProducer.notifyUpdated([eventType: UserEventType.UPDATED, user: [userId: user.id, name: user.name]])
         user
     }
 
@@ -57,8 +57,8 @@ class UserService {
 
     void deleteUser(String userId) {
         def user = getUser(userId)
-        user = repository.delete(user)
-        updateProducer.notifyUpdated([eventType: EventType.DELETED, user: [userId: user.id, user: user.name]])
+        repository.delete(user)
+        updateProducer.notifyUpdated([eventType: UserEventType.DELETED, user: [userId: userId]])
     }
 
 }

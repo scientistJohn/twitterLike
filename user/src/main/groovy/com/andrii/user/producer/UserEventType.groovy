@@ -1,5 +1,5 @@
 package com.andrii.user.producer
 
-enum EventType {
+enum UserEventType {
     UPDATED, DELETED
 }

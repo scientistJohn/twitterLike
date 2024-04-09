@@ -9,4 +9,5 @@ class Credentials {
     String login
     String password
     String userId
+    String userName
 }
