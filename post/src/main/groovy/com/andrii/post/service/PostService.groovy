@@ -2,6 +2,7 @@ package com.andrii.post.service
 
 
 import com.andrii.post.model.Post
+import com.andrii.post.producer.PostEventNotifier
 import com.andrii.post.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -15,9 +16,13 @@ import org.springframework.web.server.ResponseStatusException
 class PostService {
     @Autowired
     PostRepository repository
+    @Autowired
+    PostEventNotifier notifier
 
     def createPost(Map createRequest, String userId) {
-        repository.save(new Post(userId: userId, text: createRequest.text))
+        def post = repository.save(new Post(userId: userId, text: createRequest.text))
+        notifier.notifyCreate(post)
+        post
     }
 
 
@@ -35,6 +40,7 @@ class PostService {
     def deletePost(String postId, String userId) {
         def post = getPost(postId, userId)
         repository.delete(post)
+        notifier.notifyDelete(postId, userId)
     }
 
     def getPosts(String userId, int pageNumber, int size) {
