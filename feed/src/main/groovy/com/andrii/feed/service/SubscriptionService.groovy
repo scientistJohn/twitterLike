@@ -4,7 +4,7 @@ import com.andrii.feed.model.FeedEventType
 import com.andrii.feed.model.FeedRecord
 import com.andrii.feed.model.Subscription
 import com.andrii.feed.model.SubscriptionEvent
-import com.andrii.feed.producer.NotificationEvent
+import com.andrii.feed.producer.SubscriptionEventType
 import com.andrii.feed.producer.SubscriptionNotifier
 import com.andrii.feed.repository.FeedRecordRepository
 import com.andrii.feed.repository.SubscriptionRepository
@@ -30,7 +30,7 @@ class SubscriptionService {
         def subscriptionEvent = [
                 subscriberId: subscriberId,
                 subscribedId: subscribedId,
-                type: NotificationEvent.SUBSCRIBE
+                type: SubscriptionEventType.SUBSCRIBE
         ]
         subscriptionNotifier.notify(subscriptionEvent)
     }
@@ -41,7 +41,7 @@ class SubscriptionService {
         def subscriptionEvent = [
                 subscriberId: subscriberId,
                 subscribedId: subscribedId,
-                type: NotificationEvent.UNSUBSCRIBE
+                type: SubscriptionEventType.UNSUBSCRIBE
         ]
         subscriptionNotifier.notify(subscriptionEvent)
     }

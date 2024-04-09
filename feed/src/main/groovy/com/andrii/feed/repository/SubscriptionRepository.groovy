@@ -8,6 +8,6 @@ interface SubscriptionRepository extends MongoRepository<Subscription, Subscript
     @Query("{'id.subscriberId': ?0}")
     List<Subscription> findAllBySubscriberId(String userId)
 
-    @Query("{ \$or: [{'id.subscriberId': ?0}, {'id.subscribedId': ?0}]}")
+    @Query(value = "{ \$or: [{'id.subscriberId': ?0}, {'id.subscribedId': ?0}]}", delete = true)
     void deleteByUserId(String userId)
 }

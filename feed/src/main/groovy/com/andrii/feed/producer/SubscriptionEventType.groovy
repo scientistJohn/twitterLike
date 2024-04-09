@@ -1,5 +1,5 @@
 package com.andrii.feed.producer
 
-enum NotificationEvent {
+enum SubscriptionEventType {
     SUBSCRIBE, UNSUBSCRIBE
 }

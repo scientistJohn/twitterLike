@@ -19,6 +19,9 @@ class UpdateUserListener {
         switch (eventType) {
             case UserEventType.UPDATED:
                 def credentials = repository.findByUserId(event.user.userId)
+                if(!credentials) {
+                    return
+                }
                 credentials.userName = event.user.name
                 repository.save(credentials)
                 break
