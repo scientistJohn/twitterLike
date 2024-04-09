@@ -25,7 +25,7 @@ class StatsService {
                                     postId  : it.id.objectId,
                                     comments: it.comments,
                                     likes   : it.likes,
-                                    userLike: userLikes.find { it.userId == userId }?.id
+                                    userLike: userLikes.any { it.id.userId == userId }
                             ]
                     ]
                 }
@@ -51,7 +51,7 @@ class StatsService {
                             [
                                     commentId: it.id.objectId,
                                     likes    : it.likes,
-                                    userLike : userLikes.find { it.userId == userId }?.id
+                                    userLike : userLikes.any { it.id.userId == userId }
                             ]
                     ]
                 }

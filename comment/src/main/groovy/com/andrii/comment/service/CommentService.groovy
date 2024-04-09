@@ -2,7 +2,6 @@ package com.andrii.comment.service
 
 import com.andrii.comment.model.Comment
 import com.andrii.comment.producer.CommentEventProducer
-import com.andrii.comment.producer.CommentEventType
 import com.andrii.comment.repository.CommentRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -25,15 +24,15 @@ class CommentService {
         def comment = new Comment(userId: userId,
                 postId: postId,
                 text: commentRequest.text)
-        repository.save(comment)
-        eventProducer.notify(CommentEventType.CREATED, [:])
+        comment = repository.save(comment)
+        eventProducer.notifyCreate(comment.userId, comment.id, comment.postId)
     }
 
     void removeComment(String commentId, String userId) {
         def comment = repository.findByIdAndUserId(commentId, userId)
                 .orElseThrow { new ResponseStatusException(HttpStatus.NOT_FOUND, "no such comment") }
         repository.delete(comment)
-        eventProducer.notify(CommentEventType.REMOVED, [:])
+        eventProducer.notifyDelete(userId, commentId, comment.postId)
     }
 
     def getComments(String postId, int pageNum, int size) {

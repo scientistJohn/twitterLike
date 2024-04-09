@@ -24,4 +24,6 @@ interface StatsRepository extends MongoRepository<Stats, Stats.StatsId> {
     void decrLikes(String objectId, ObjectType objectType)
 
     void deleteByUserId(String userId)
+
+    void deleteByParentId(String parentId)
 }

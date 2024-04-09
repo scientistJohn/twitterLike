@@ -1,6 +1,6 @@
 package com.andrii.like.controller
 
-import com.andrii.like.model.ObjectType
+
 import com.andrii.like.service.LikeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -13,19 +13,27 @@ class LikeController {
     @PostMapping("/post/{postId}/like")
     void likePost(@PathVariable("postId") String postId,
                   @RequestParam("userId") String userId) {
-        service.like(userId, postId, ObjectType.POST)
+        service.likePost(userId, postId)
     }
 
-    @PostMapping("/comment/{commentId}/like")
-    void likeComment(@PathVariable("commentId") String commentId,
+    @PostMapping("/post/{postId}/comment/{commentId}/like")
+    void likeComment(@PathVariable("postId") String postId,
+                     @PathVariable("commentId") String commentId,
                      @RequestParam("userId") String userId) {
-        service.like(userId, commentId, ObjectType.COMMENT)
+        service.likeComment(userId, commentId, postId)
     }
 
-    @DeleteMapping("/like/{likeId}")
-    void unlike(@PathVariable("likeId") String likeId,
-                @RequestParam("userId") String userId) {
-        service.unlike(likeId, userId)
+    @DeleteMapping("/post/{postId}/like")
+    void unlikePost(@PathVariable("postId") String postId,
+                    @RequestParam("userId") String userId) {
+        service.unlikePost(userId, postId)
+    }
+
+    @DeleteMapping("/post/{postId}/comment/{commentId}/like")
+    void unlikeComment(@PathVariable("postId") String postId,
+                       @PathVariable("commentId") String commentId,
+                       @RequestParam("userId") String userId) {
+        service.unlikeComment(userId, commentId, postId)
     }
 
 }

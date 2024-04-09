@@ -1,16 +1,18 @@
 package com.andrii.like
 
 import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
-import org.springframework.kafka.core.ConsumerFactory
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory
+import org.springframework.kafka.core.*
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.*
+import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG
+import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG
 
 @SpringBootApplication
 @EnableMongoRepositories(basePackages = "com.andrii.like.repository")
@@ -36,5 +38,19 @@ class Application {
         def factory = new ConcurrentKafkaListenerContainerFactory<String, String>()
         factory.setConsumerFactory(consumerFactory)
         factory
+    }
+
+    @Bean
+    ProducerFactory<String, String> producerFactory(@Value('${kafka.bootstrap.servers}') String bootstrapServers) {
+        Map<String, Object> props = [:]
+        props[BOOTSTRAP_SERVERS_CONFIG] = bootstrapServers
+        props[KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer.class
+        props[VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer.class
+        new DefaultKafkaProducerFactory<>(props)
+    }
+
+    @Bean
+    KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
+        new KafkaTemplate<String, String>(producerFactory)
     }
 }
