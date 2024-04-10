@@ -1,5 +1,6 @@
 package com.andrii.feed.consumer
 
+import com.andrii.feed.model.FeedEventType
 import com.andrii.feed.repository.FeedRecordRepository
 import com.andrii.feed.repository.SubscriptionRepository
 import groovy.json.JsonSlurper
@@ -21,6 +22,7 @@ class UpdateUserListener {
         UserEventType eventType = UserEventType.valueOf(event.eventType as String)
         if (UserEventType.DELETED == eventType) {
             feedRecordRepository.deleteByUserId(event.user.userId)
+            feedRecordRepository.deleteSubscriptionsToUserEvents(event.user.userId, FeedEventType.SUBSCRIPTION)
             subscriptionRepository.deleteByUserId(event.user.userId)
         }
     }
